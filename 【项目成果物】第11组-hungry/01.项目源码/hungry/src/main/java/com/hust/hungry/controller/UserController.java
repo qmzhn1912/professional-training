@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
         User user = userService.getById(id);
         return ResponseEntity.ok(user);
     }
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setId(id);
+    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
+        user.setUserId(id);
         userService.updateById(user);
         return ResponseEntity.ok(user);
     }
