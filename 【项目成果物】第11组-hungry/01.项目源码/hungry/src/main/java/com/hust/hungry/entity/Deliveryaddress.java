@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @TableName("deliveryaddress")
 public class Deliveryaddress {
-    @TableId(value = "userId",type = IdType.AUTO)
+    @TableId(value = "daId",type = IdType.AUTO)
     private Integer daId;
     private  String userId;
     private  String address;
