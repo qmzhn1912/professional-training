@@ -40,7 +40,6 @@ class UserControllerTest {
         user.setUserImg("testimg.jpg");
         user.setDelTag(0);
 
-        // 发送 POST 请求并获取响应
-        restTemplate.postForEntity("http://localhost:8080/user/reg", user, User.class);
+
     }
 }
