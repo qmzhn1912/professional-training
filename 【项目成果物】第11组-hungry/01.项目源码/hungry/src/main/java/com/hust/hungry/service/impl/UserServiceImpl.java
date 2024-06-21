@@ -8,4 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+    @Override
+    public int register(User user) {
+        //处理数据的过程
+        //return  userMapper.insert(user);
+        return baseMapper.insert(user);
+    }
 }

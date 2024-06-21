@@ -16,8 +16,8 @@ public class HungryApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
-	public static void main(String[] args) {
-		SpringApplication.run(HungryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HungryApplication.class, args);
+    }
 
 }

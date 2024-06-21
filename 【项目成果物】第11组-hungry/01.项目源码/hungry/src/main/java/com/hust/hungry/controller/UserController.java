@@ -1,51 +1,54 @@
 package com.hust.hungry.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.User;
 import com.hust.hungry.service.UserService;
+import com.hust.hungry.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.list();
-        return ResponseEntity.ok(users);
+    @PostMapping("/reg")
+    public JsonResult reg(@RequestBody User user){
+        //1、取  取参数封装  看方法的参数
+        // 2、调 业务逻辑层
+        int rs= userService.register(user);
+        // 3、转  输出结果
+        //return
+        if(rs==1){
+            System.out.println("注册成功");
+            return new JsonResult(true,"注册成功");
+        }else{
+            return new JsonResult(false,"注册失败");
+        }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable(name = "id") String id) {
-        System.out.println(id);
-        User user = userService.getById(id);
-        System.out.println(user.toString());
-        return ResponseEntity.ok(user);
+    @PostMapping("/login")
+    public JsonResult login(@RequestBody User user){
+        //1
+        //2
+        System.out.println(user);
+        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getUserName,user.getUserName())
+                .eq(User::getPassword,user.getPassword())
+                .eq(User::getDelTag,1);
+        User u= userService.getOne(lambdaQueryWrapper);
+        if(u!=null){
+            //生成令牌token字符串
+            String token= JwtUtils.sign(u);
+            return new JsonResult(true,u,token);
+        }else {
+            return new JsonResult(false,"用户名或密码错误！");
+        }
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        userService.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User user) {
-        user.setUserId(id);
-        userService.updateById(user);
-        return ResponseEntity.ok(user);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.removeById(id);
-        return ResponseEntity.noContent().build();
-    }
 }
