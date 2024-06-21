@@ -6,7 +6,7 @@ import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 @Data
 @TableName("orders")
-public class Order {
+public class Orders {
     @TableId(value = "orderId",type = IdType.AUTO)
     private Integer orderId;
     private  String userId;

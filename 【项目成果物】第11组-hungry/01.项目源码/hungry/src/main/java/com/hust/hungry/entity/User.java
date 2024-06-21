@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @TableName("user")
-public class User {
+public class User{
     @TableId(value = "userId")
     private String userId;
 

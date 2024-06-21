@@ -77,7 +77,7 @@ public class UserMapperTest {
     public void getUserById(){
 
         //查询条件
-        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper();
+        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         //查询条件
         lambdaQueryWrapper.eq(User::getUserId,"11111111111");
         //查询列

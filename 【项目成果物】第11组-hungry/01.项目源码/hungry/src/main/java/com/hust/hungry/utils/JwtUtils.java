@@ -41,8 +41,6 @@ public class JwtUtils {
                 .sign(Algorithm.HMAC256(SECRET));
     }
 
-
-
     //校验token
     public static boolean verify(String token){
         try {
