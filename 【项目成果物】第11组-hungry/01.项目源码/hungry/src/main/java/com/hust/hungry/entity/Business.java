@@ -1,5 +1,6 @@
 package com.hust.hungry.entity;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
@@ -18,4 +19,9 @@ public class Business {
     private Float starPrice;
     private Float deliveryPrice;
     private  String remarks;
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
+    }
 }

@@ -3,8 +3,8 @@ package com.hust.hungry.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import com.hust.hungry.entity.User;
+import com.hust.hungry.entity.Orderdetailet;
 
 @Mapper
-public interface OrderdetailetMapper extends BaseMapper<User> {
+public interface OrderdetailetMapper extends BaseMapper<Orderdetailet> {
 }

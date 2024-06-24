@@ -33,7 +33,7 @@ public interface OrderMapper extends BaseMapper<Orders> {
                     o.userId like concat('%',#{k},'%')
                     or
                     u.userName like concat('%',#{k},'%')
-                </if>
+               </if>
             </where>
         </script>
     """)
@@ -56,3 +56,4 @@ public interface OrderMapper extends BaseMapper<Orders> {
     """)
     public Page<OrderVo> selectByKeyPage(Page<OrderVo> page, @Param("key") String key);
 }
+
