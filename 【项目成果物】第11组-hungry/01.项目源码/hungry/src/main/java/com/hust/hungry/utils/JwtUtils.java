@@ -27,7 +27,7 @@ public class JwtUtils {
         Calendar instance = Calendar.getInstance();
         // 120秒后令牌token失效
         //instance.add(Calendar.HOUR,2);
-        instance.add(Calendar.HOUR,5);
+        instance.add(Calendar.HOUR,12);
         return JWT.create()
                 //将什么内容放入到令牌中，自己决定 start
                 .withClaim("id", user.getUserId())
@@ -40,6 +40,8 @@ public class JwtUtils {
                 //设置加密模式
                 .sign(Algorithm.HMAC256(SECRET));
     }
+
+
 
     //校验token
     public static boolean verify(String token){
