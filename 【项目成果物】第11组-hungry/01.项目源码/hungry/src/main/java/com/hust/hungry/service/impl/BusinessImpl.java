@@ -1,5 +1,6 @@
 package com.hust.hungry.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hust.hungry.entity.Business;
 import com.hust.hungry.mapper.FoodMapper;
@@ -35,5 +36,10 @@ public class BusinessImpl extends ServiceImpl<BusinessMapper, Business> implemen
             }
         }
         return businessListSearchedByName;
+    }
+
+    @Override
+    public Page<Business> getBusinessListByorderTypePage(Page<Business> page,Integer orderTypeId) {
+        return baseMapper.selectBusinessListByorderTypePage(page,orderTypeId);
     }
 }
