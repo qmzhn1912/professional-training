@@ -1,13 +1,16 @@
 package com.hust.hungry.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.hust.hungry.entity.JsonResult;
+import com.hust.hungry.entity.*;
 import com.hust.hungry.entity.vo.OrderVo;
+import com.hust.hungry.mapper.*;
 import com.hust.hungry.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,16 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CartMapper cartMapper;
+    @Autowired
+    private FoodMapper foodMapper;
+    @Autowired
+    private DeliveryaddressMapper deliveryaddressMapper;
+    @Autowired
+    private OrderMapper orderMapper;
+    @Autowired
+    private OrderdetailetMapper orderdetailetMapper;
 
     /**
      * restful风格
@@ -100,5 +113,41 @@ public class OrderController {
         return  new JsonResult(page);
     }
 
+    @PostMapping("/produce")
+    public void produceOrder(@RequestBody Orders order){
+        Date date=new Date();
+        String time = date.getTime()+"";
+        double orderToal = 0;
+        LambdaQueryWrapper<Cart> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        //查询条件
+        lambdaQueryWrapper.eq(Cart::getBusinessId,order.getBusinessId());
+        lambdaQueryWrapper.eq(Cart::getUserId,order.getUserId());
+
+        List<Cart> cartList = cartMapper.selectList(lambdaQueryWrapper);
+        for(Cart cart:cartList){
+            Integer foodId = cart.getFoodId();
+            orderToal += cart.getQuantity()*foodMapper.selectById(foodId).getFoodPrice();
+        }
+//        System.out.println(orderToal);
+        QueryWrapper<Deliveryaddress> queryWrapper=new QueryWrapper<>();
+        //查询条件
+        queryWrapper.eq("userId",order.getUserId());
+        //查询列
+        queryWrapper.select(true,"daId");
+        Deliveryaddress deliveryaddress = deliveryaddressMapper.selectOne(queryWrapper);
+//        System.out.println(deliveryaddress.getDaId());
+        order.setOrderTotal(orderToal);
+//        System.out.println(order.getOrderTotal());
+        order.setDaId(deliveryaddress.getDaId());
+        orderMapper.insert(order);
+        for(Cart cart:cartList){
+            Integer foodId = cart.getFoodId();
+            Orderdetailet orderdetailet=new Orderdetailet();
+            orderdetailet.setOrderId(order.getOrderId());
+            orderdetailet.setFoodId(foodId);
+            orderdetailet.setQuantity(cart.getQuantity());
+            orderdetailetMapper.insert(orderdetailet);
+        }
+    }
 }
 

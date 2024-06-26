@@ -18,7 +18,7 @@ import java.util.List;
 public class BusinessController {
     @Autowired
     private BusinessService businessService;
-    @GetMapping("/list")
+    @GetMapping("/search")
     public JsonResult getBusinessesByKey(@RequestParam("key")String key) {
         List<Business> businessList = businessService.getBusinessListByKey(key);
         return new JsonResult(businessList);

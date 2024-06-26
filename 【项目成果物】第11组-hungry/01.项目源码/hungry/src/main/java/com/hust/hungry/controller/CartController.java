@@ -31,7 +31,7 @@ public class CartController {
 
         if (existingCart != null) {
             // 如果存在,则将 quantity 加 1
-            existingCart.setQuantity(existingCart.getQuantity() + 1);
+            existingCart.setQuantity(cart.getQuantity() );
             cartMapper.updateById(existingCart);
             return ResponseEntity.status(HttpStatus.OK).body(existingCart);
         } else {
