@@ -12,5 +12,5 @@ public class Cart {
     private  String userId;
     private Integer businessId;
     private  Integer foodId;
-    private Integer quantity;
+    private Integer quantity=1;
 }
