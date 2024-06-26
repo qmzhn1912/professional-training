@@ -148,6 +148,10 @@ public class OrderController {
             orderdetailet.setQuantity(cart.getQuantity());
             orderdetailetMapper.insert(orderdetailet);
         }
+        LambdaQueryWrapper<Cart> lambdaQueryWrapper_sd = new LambdaQueryWrapper<>();
+        //删除条件
+        lambdaQueryWrapper_sd.eq(Cart::getUserId,order.getUserId());
+        cartMapper.delete(lambdaQueryWrapper_sd);
     }
 }
 
