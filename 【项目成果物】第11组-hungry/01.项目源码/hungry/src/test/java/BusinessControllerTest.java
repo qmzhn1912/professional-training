@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest(classes = HungryApplication.class)
-public class BusinessController {
+public class BusinessControllerTest {
     @Autowired
     public BusinessService businessService;
     @Test
