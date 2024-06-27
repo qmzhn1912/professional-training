@@ -5,7 +5,9 @@ import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.User;
 import com.hust.hungry.service.UserService;
 import com.hust.hungry.utils.JwtUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +51,12 @@ public class UserController {
         }else {
             return new JsonResult(false,"用户名或密码错误！");
         }
+    }
+
+    @DeleteMapping("/delete_user")
+    public ResponseEntity<Void> logoutUser( @Param("userId") String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 
 }
