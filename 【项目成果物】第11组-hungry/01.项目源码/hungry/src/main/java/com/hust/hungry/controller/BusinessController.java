@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hust.hungry.entity.Business;
 import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.vo.OrderVo;
+import com.hust.hungry.mapper.BusinessMapper;
 import com.hust.hungry.service.BusinessService;
 import com.hust.hungry.service.UserService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,16 @@ import java.util.List;
 public class BusinessController {
     @Autowired
     private BusinessService businessService;
+    @Autowired
+    private BusinessMapper businessMapper;
+
+    @PostMapping("/appraise/{score}/{businessId}")
+    public void appraise(@PathVariable("score")Float score,@PathVariable("businessId")Integer businessId){
+        Business business = businessMapper.selectById(businessId);
+        business.setAppraiseNum(business.getAppraiseNum()+1);
+        business.setScore((business.getAppraiseNum()* business.getScore()+score)/business.getAppraiseNum());
+        businessMapper.updateById(business);
+    }
     @GetMapping("/search")
     public JsonResult getBusinessesByKey(@RequestParam("key")String key) {
         List<Business> businessList = businessService.getBusinessListByKey(key);
