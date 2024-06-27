@@ -139,6 +139,7 @@ public class OrderController {
         queryWrapper.select(true,"daId");
         Deliveryaddress deliveryaddress = deliveryaddressMapper.selectOne(queryWrapper);
 //        System.out.println(deliveryaddress.getDaId());
+        order.setOrderDate(time);
         order.setOrderTotal(orderToal);
 //        System.out.println(order.getOrderTotal());
         order.setDaId(deliveryaddress.getDaId());
