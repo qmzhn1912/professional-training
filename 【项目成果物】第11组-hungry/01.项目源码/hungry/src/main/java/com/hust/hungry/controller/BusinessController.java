@@ -74,4 +74,18 @@ public class BusinessController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBusiness);
     }
 
+    @PostMapping("/update/{businessId}")
+     public JsonResult update(@RequestParam(value = "businessName") String businessName,
+                              @RequestParam(value = "starPrice") Float starPrice,
+                              @RequestParam(value = "businessAddress") String businessAddress,
+                              @RequestParam(value = "deliveryPrice") Float deliveryPrice,
+                              @PathVariable("businessId")Integer businessId) {
+        Business business = businessMapper.selectById(businessId);
+        business.setBusinessName(businessName);
+        business.setStarPrice(starPrice);
+        business.setBusinessAddress(businessAddress);
+        business.setDeliveryPrice(deliveryPrice);
+        businessMapper.updateById(business);
+        return new JsonResult(business);
+    }
 }
