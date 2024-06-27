@@ -19,6 +19,8 @@ public class Business {
     private Float starPrice;
     private Float deliveryPrice;
     private  String remarks;
+    private Integer appraiseNum;
+    private Float score;
 
     @Override
     public String toString() {
