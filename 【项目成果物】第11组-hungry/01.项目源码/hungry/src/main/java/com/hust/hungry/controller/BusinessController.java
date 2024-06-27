@@ -59,4 +59,5 @@ public class BusinessController {
     public List<Business> getBusinessListByOrderTypeIdOrderByScore(@RequestParam Integer orderTypeId) {
         return businessService.getBusinessListByOrderTypeIdOrderByScore(orderTypeId);
     }
+
 }
