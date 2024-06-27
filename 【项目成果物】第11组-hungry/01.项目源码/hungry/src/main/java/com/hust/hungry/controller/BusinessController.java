@@ -53,4 +53,10 @@ public class BusinessController {
         page = businessService.getBusinessListByorderTypePage(page,orderTypeId);
         return new JsonResult(page);
     }
+
+
+    @GetMapping("/byscore")
+    public List<Business> getBusinessListByOrderTypeIdOrderByScore(@RequestParam Integer orderTypeId) {
+        return businessService.getBusinessListByOrderTypeIdOrderByScore(orderTypeId);
+    }
 }

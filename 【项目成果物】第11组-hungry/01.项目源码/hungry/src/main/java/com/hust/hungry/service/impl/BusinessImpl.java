@@ -16,6 +16,8 @@ import java.util.List;
 public class BusinessImpl extends ServiceImpl<BusinessMapper, Business> implements BusinessService {
     @Autowired
     private FoodMapper foodMapper;
+    @Autowired
+    private BusinessMapper businessMapper;
     @Override
     public List<Business> getBusinessListByKey(String key) {
         System.out.println("111");
@@ -41,5 +43,10 @@ public class BusinessImpl extends ServiceImpl<BusinessMapper, Business> implemen
     @Override
     public Page<Business> getBusinessListByorderTypePage(Page<Business> page,Integer orderTypeId) {
         return baseMapper.selectBusinessListByorderTypePage(page,orderTypeId);
+    }
+
+    @Override
+    public List<Business> getBusinessListByOrderTypeIdOrderByScore(Integer orderTypeId) {
+        return businessMapper.selectBusinessListByOrderTypeIdOrderByScore(orderTypeId);
     }
 }

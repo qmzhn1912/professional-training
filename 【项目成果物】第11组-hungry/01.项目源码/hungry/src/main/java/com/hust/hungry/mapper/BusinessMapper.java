@@ -37,4 +37,18 @@ public interface BusinessMapper extends BaseMapper<Business> {
         </script>
     """)
       Page<Business> selectBusinessListByorderTypePage(Page<Business> page,@Param("orderTypeId") Integer orderTypeId);
+
+    @Select("""
+        <script>
+        select b.businessName, b.businessId, b.businessAddress, b.businessExplain, b.businessImg, b.orderTypeId, b.starPrice, b.deliveryPrice
+        from business b
+        <where>
+           <if test="orderTypeId != null">
+                b.orderTypeId = #{orderTypeId}
+            </if>
+        </where>
+        order by b.score desc
+        </script>
+    """)
+    List<Business> selectBusinessListByOrderTypeIdOrderByScore(@Param("orderTypeId") Integer orderTypeId);
 }

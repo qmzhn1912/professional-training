@@ -11,4 +11,5 @@ import java.util.List;
 public interface BusinessService extends IService<Business> {
     List<Business> getBusinessListByKey(String key);
     Page<Business> getBusinessListByorderTypePage(Page<Business> page,Integer orderType);
+    List<Business> getBusinessListByOrderTypeIdOrderByScore(Integer orderTypeId);
 }
