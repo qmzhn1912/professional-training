@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BusinessImpl extends ServiceImpl<BusinessMapper, Business> implements BusinessService {
+public class BusinessServiceImpl extends ServiceImpl<BusinessMapper, Business> implements BusinessService {
     @Autowired
     private FoodMapper foodMapper;
     @Autowired
