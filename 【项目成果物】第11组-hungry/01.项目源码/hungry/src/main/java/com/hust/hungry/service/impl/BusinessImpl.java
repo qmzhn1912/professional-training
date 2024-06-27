@@ -49,4 +49,15 @@ public class BusinessImpl extends ServiceImpl<BusinessMapper, Business> implemen
     public List<Business> getBusinessListByOrderTypeIdOrderByScore(Integer orderTypeId) {
         return businessMapper.selectBusinessListByOrderTypeIdOrderByScore(orderTypeId);
     }
+
+    @Override
+    public Business saveBusiness(Business business) {
+        // 设置一些默认值
+        business.setAppraiseNum(1);
+        business.setScore(5.0f);
+
+        // 保存商家信息到数据库
+        businessMapper.insert(business);
+        return business;
+    }
 }

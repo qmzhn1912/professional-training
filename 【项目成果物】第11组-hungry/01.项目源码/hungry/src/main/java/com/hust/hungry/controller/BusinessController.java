@@ -10,6 +10,8 @@ import com.hust.hungry.service.BusinessService;
 import com.hust.hungry.service.UserService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -60,4 +62,9 @@ public class BusinessController {
         return businessService.getBusinessListByOrderTypeIdOrderByScore(orderTypeId);
     }
 
+    @PostMapping("/register")
+    public ResponseEntity<Business> registerBusiness(@RequestBody Business business) {
+        Business savedBusiness = businessService.saveBusiness(business);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedBusiness);
+    }
 }
