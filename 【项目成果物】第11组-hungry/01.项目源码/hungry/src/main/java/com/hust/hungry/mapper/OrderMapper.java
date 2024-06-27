@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hust.hungry.entity.vo.OrderVo;
 import org.apache.ibatis.annotations.Mapper;
 import com.hust.hungry.entity.Orders;
+import com.hust.hungry.entity.Orderdetailet;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -55,5 +56,11 @@ public interface OrderMapper extends BaseMapper<Orders> {
         </script>
     """)
     public Page<OrderVo> selectByKeyPage(Page<OrderVo> page, @Param("key") String key);
+
+    @Select("SELECT * FROM orders WHERE userId = #{userId}")
+     public List<Orders> getOrdersByUserId(@Param("userId") String userId);
+
+    @Select("SELECT * FROM orderdetailet WHERE orderId = #{orderId}")
+    public List<Orderdetailet> getOrderdetailetByOrderId(@Param("orderId") String userId);
 }
 

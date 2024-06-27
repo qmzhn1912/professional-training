@@ -9,6 +9,8 @@ import com.hust.hungry.entity.vo.OrderVo;
 import com.hust.hungry.mapper.*;
 import com.hust.hungry.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ public class OrderController {
     private OrderMapper orderMapper;
     @Autowired
     private OrderdetailetMapper orderdetailetMapper;
+
 
     /**
      * restful风格
@@ -148,6 +151,20 @@ public class OrderController {
             orderdetailet.setQuantity(cart.getQuantity());
             orderdetailetMapper.insert(orderdetailet);
         }
+    }
+
+
+
+    @GetMapping("/user")
+    public ResponseEntity<List<Orders>> getOrdersByUserId(@RequestParam("userId") String userId) {
+        List<Orders> orders = orderService.getOrdersByUserId(userId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
+
+    @GetMapping("/user_detail")
+    public ResponseEntity<List<Orderdetailet>> getOrderdetailetByOrderId(@RequestParam("orderId") String orderId) {
+        List<Orderdetailet> orderdetail = orderService.getOrderdetailetByOrderId( orderId);
+        return new ResponseEntity<>(orderdetail, HttpStatus.OK);
     }
 }
 
