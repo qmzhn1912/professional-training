@@ -21,7 +21,8 @@ public class Business {
     private  String remarks;
     private Integer appraiseNum;
     private Float score;
-
+    private String userId;
+    private Integer state;
     @Override
     public String toString() {
         return JSON.toJSONString(this);

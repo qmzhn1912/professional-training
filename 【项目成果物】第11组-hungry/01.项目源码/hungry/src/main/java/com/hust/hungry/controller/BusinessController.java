@@ -38,6 +38,12 @@ public class BusinessController {
         return new JsonResult(businessList);
     }
 
+    @GetMapping("/getInfo/{businessId}")
+    public JsonResult getInfo(@PathVariable("businessId")Integer businessId) {
+        Business business= businessMapper.selectById(businessId);
+        return new JsonResult(business);
+    }
+
     @GetMapping("/{orderTypeId}")
     public JsonResult getBuisinessByorderTypePage(@RequestParam(value = "pn",defaultValue ="1" ,required = false) Integer pn,
                                               @RequestParam(value = "ps",defaultValue = "3",required = false) Integer ps,
@@ -67,4 +73,5 @@ public class BusinessController {
         Business savedBusiness = businessService.saveBusiness(business);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBusiness);
     }
+
 }

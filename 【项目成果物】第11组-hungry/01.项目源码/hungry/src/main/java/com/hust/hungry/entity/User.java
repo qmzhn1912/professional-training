@@ -22,19 +22,11 @@ public class User{
 
     private Integer delTag;
 
+    private Integer type;
+
     public User(){
 
     }
-
-    public User(String id, String name,String password,Integer userSex,String userImg,Integer delTag) {
-        this.userId = id;
-        this.userName = name;
-        this.password = password;
-        this.userSex = userSex;
-        this.userImg = userImg;
-        this.delTag = delTag;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -43,7 +35,8 @@ public class User{
                 ", userName='" + userName + '\'' +
                 ", userSex=" + userSex +
                 ", userImg='" + userImg + '\'' +
-                ", delTag=" + delTag +
+                ", delTag=" + delTag + '\'' +
+                ", type=" + type +
                 '}';
     }
 
