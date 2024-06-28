@@ -19,7 +19,29 @@ public class FoodController {
         LambdaQueryWrapper<Food> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         //查询条件
         lambdaQueryWrapper.eq(Food::getBusinessId,businessId);
-        List<Food> businessList = foodMapper.selectList(lambdaQueryWrapper);
-        return new JsonResult(businessList.size());
+        List<Food> foodList = foodMapper.selectList(lambdaQueryWrapper);
+        return new JsonResult(foodList);
+    }
+    @GetMapping("/add")
+    public JsonResult addBusinessFoodList(@RequestBody Food food) {
+        foodMapper.insert(food);
+        return new JsonResult("添加成功");
+    }
+    @DeleteMapping("/del")
+    public JsonResult delBusinessFoodList(@RequestParam("businessId")Integer businessId) {
+        LambdaQueryWrapper<Food> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Food::getBusinessId,businessId);
+        foodMapper.delete(lambdaQueryWrapper);
+        return new JsonResult("删除成功");
+    }
+    @PutMapping("/update")
+    public JsonResult updateBusinessFoodList(@RequestBody Food food){
+        Food updatedFood = foodMapper.selectById(food.getFoodId());
+        updatedFood.setFoodName(food.getFoodName());
+        updatedFood.setFoodName(food.getFoodExplain());
+        updatedFood.setFoodName(food.getFoodExplain());
+        updatedFood.setFoodName(food.getRemarks());
+        foodMapper.updateById(updatedFood);
+        return new JsonResult(updatedFood);
     }
 }

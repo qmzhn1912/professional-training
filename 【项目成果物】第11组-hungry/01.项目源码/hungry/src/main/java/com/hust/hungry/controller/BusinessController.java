@@ -44,10 +44,10 @@ public class BusinessController {
         return new JsonResult(business);
     }
 
-    @GetMapping("/{orderTypeId}")
+    @GetMapping("/{businessTypeId}")
     public JsonResult getBuisinessByorderTypePage(@RequestParam(value = "pn",defaultValue ="1" ,required = false) Integer pn,
                                               @RequestParam(value = "ps",defaultValue = "3",required = false) Integer ps,
-                                              @PathVariable("orderTypeId") Integer orderTypeId){
+                                              @PathVariable("businessTypeId") Integer orderTypeId){
         //1、取  参数列表
         //2、调
         Page<Business> page = new Page<>(pn,ps);
@@ -74,7 +74,7 @@ public class BusinessController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBusiness);
     }
 
-    @PostMapping("/update/{businessId}")
+    @PutMapping("/update/{businessId}")
      public JsonResult update(@RequestParam(value = "businessName") String businessName,
                               @RequestParam(value = "starPrice") Float starPrice,
                               @RequestParam(value = "businessAddress") String businessAddress,
