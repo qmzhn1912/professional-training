@@ -62,5 +62,8 @@ public interface OrderMapper extends BaseMapper<Orders> {
 
     @Select("SELECT * FROM orderdetailet WHERE orderId = #{orderId}")
     public List<Orderdetailet> getOrderdetailetByOrderId(@Param("orderId") String userId);
+
+    @Select("SELECT * FROM orders WHERE BusinessId = #{BusinessId}")
+    public List<Orders> getOrdersByBusinessId(@Param("BusinessId") int BusinessId);
 }
 

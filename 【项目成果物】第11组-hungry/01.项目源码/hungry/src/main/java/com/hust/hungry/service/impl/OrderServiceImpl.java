@@ -46,4 +46,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     public List<Orderdetailet> getOrderdetailetByOrderId(String orderId){
         return orderMapper.getOrderdetailetByOrderId(orderId);
     };
+
+    @Override
+    public  List<Orders> getOrdersByBusinessId(int  BusinessId) {
+        return orderMapper.getOrdersByBusinessId(BusinessId);
+    }
+
 }

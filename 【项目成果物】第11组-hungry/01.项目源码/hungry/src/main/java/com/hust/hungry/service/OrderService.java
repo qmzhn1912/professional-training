@@ -20,4 +20,6 @@ public interface OrderService extends IService<Orders> {
     public  List<Orders> getOrdersByUserId(String userId);
 
     public List<Orderdetailet> getOrderdetailetByOrderId( String userId);
+
+    public  List<Orders> getOrdersByBusinessId(int BusinessId);
 }

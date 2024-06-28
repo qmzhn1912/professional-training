@@ -171,5 +171,11 @@ public class OrderController {
         List<Orderdetailet> orderdetail = orderService.getOrderdetailetByOrderId( orderId);
         return new ResponseEntity<>(orderdetail, HttpStatus.OK);
     }
+
+    @GetMapping("/business")
+    public ResponseEntity<List<Orders>> getOrdersByOrderId(@RequestParam("businessId") int businessId) {
+        List<Orders> orders = orderService.getOrdersByBusinessId(businessId);
+        return new ResponseEntity<>(orders, HttpStatus.OK);
+    }
 }
 
