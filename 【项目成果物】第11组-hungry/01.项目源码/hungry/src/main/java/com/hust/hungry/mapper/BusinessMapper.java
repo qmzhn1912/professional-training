@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.hust.hungry.entity.Business;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -51,4 +52,7 @@ public interface BusinessMapper extends BaseMapper<Business> {
         </script>
     """)
     List<Business> selectBusinessListByOrderTypeIdOrderByScore(@Param("orderTypeId") Integer orderTypeId);
+
+    @Update("UPDATE business SET remarks = #{remarks} WHERE businessId = #{businessId}")
+    int updateBusinessRemarksByBusinessId(@Param("businessId") Integer businessId, @Param("remarks") String remarks);
 }

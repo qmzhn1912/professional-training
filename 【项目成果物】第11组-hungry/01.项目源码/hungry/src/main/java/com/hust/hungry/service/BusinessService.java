@@ -13,4 +13,5 @@ public interface BusinessService extends IService<Business> {
     Page<Business> getBusinessListByorderTypePage(Page<Business> page,Integer orderType);
     List<Business> getBusinessListByOrderTypeIdOrderByScore(Integer orderTypeId);
     Business saveBusiness(Business business);
+    public int updateBusinessRemarksByBusinessId(Integer businessId, String remarks);
 }

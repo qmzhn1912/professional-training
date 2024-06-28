@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/business")
@@ -95,6 +96,7 @@ public class BusinessController {
         String id = generateSixDigitString();
         user.setUserId(id);
         business.setUserId(id);
+        business.setRemarks("open");
         user.setType(0);
         User users = userService.saveUser(user);
         businessService.saveBusiness(business);
@@ -114,5 +116,20 @@ public class BusinessController {
         business.setDeliveryPrice(deliveryPrice);
         businessMapper.updateById(business);
         return new JsonResult(business);
+    }
+
+    @PutMapping("/updateStatus")
+    public ResponseEntity<String> updateBusinessStatus(@RequestBody Map<String, Object> requestBody) {
+        Integer businessId = (Integer) requestBody.get("businessId");
+        String remarks = (String) requestBody.get("remarks");
+
+        int updatedRows = businessService.updateBusinessRemarksByBusinessId(businessId, remarks);
+
+        if (updatedRows > 0) {
+            return ResponseEntity.ok("Business status updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to update business status.");
+        }
     }
 }

@@ -53,11 +53,16 @@ public class BusinessServiceImpl extends ServiceImpl<BusinessMapper, Business> i
     @Override
     public Business saveBusiness(Business business) {
         // 设置一些默认值
-        business.setAppraiseNum(1);
-        business.setScore(5.0f);
+        business.setAppraiseNum(10);
+        business.setScore(4.0f);
 
         // 保存商家信息到数据库
         businessMapper.insert(business);
         return business;
+    }
+
+    @Override
+    public int updateBusinessRemarksByBusinessId(Integer businessId, String remarks) {
+        return businessMapper.updateBusinessRemarksByBusinessId(businessId, remarks);
     }
 }
