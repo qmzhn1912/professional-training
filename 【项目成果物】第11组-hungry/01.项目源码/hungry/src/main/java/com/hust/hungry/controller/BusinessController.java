@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hust.hungry.entity.Business;
 import com.hust.hungry.entity.JsonResult;
+import com.hust.hungry.entity.User;
 import com.hust.hungry.entity.vo.OrderVo;
 import com.hust.hungry.mapper.BusinessMapper;
 import com.hust.hungry.service.BusinessService;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,8 @@ public class BusinessController {
     private BusinessService businessService;
     @Autowired
     private BusinessMapper businessMapper;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/appraise/{score}/{businessId}")
     public void appraise(@PathVariable("score")Float score,@PathVariable("businessId")Integer businessId){
@@ -68,10 +73,32 @@ public class BusinessController {
         return businessService.getBusinessListByOrderTypeIdOrderByScore(orderTypeId);
     }
 
+    public static String generateSixDigitString() {
+        // 定义可选的字符池
+        String charPool = "0123456789";
+
+        // 生成六位数的字符串
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int randomIndex = (int) (Math.random() * charPool.length());
+            sb.append(charPool.charAt(randomIndex));
+        }
+
+        return sb.toString();
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<Business> registerBusiness(@RequestBody Business business) {
-        Business savedBusiness = businessService.saveBusiness(business);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedBusiness);
+        public ResponseEntity<User> registerBusiness(@RequestBody Business business,@Param("password") String password) {
+        User user = new User();
+        user.setUserName(business.getBusinessName());
+        user.setPassword(password);
+        String id = generateSixDigitString();
+        user.setUserId(id);
+        business.setUserId(id);
+        user.setType(0);
+        User users = userService.saveUser(user);
+        businessService.saveBusiness(business);
+        return ResponseEntity.status(HttpStatus.CREATED).body(users);
     }
 
     @PutMapping("/update/{businessId}")

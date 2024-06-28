@@ -56,4 +56,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         orderMapper.delete(new LambdaQueryWrapper<Orders>().eq(Orders::getUserId, userId));
     }
+    @Override
+    public User saveUser(User user) {
+        // 设置一些默认值
+        // 保存商家信息到数据库
+        userMapper.insert(user);
+        return user;
+    }
 }
