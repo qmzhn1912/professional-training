@@ -16,14 +16,14 @@ public class InterceptorConfig  implements WebMvcConfigurer {
         //注册TestInterceptor拦截器
         registry.addInterceptor(createTestInterceptor())
                 //排除在此拦截器外
-                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/business/register","/user/login" )
                 //被拦截的规则
                 .addPathPatterns("/**");						//添加需要拦截的路径
 
         //注册TestInterceptor拦截器
         registry.addInterceptor(createLoginInterceptor())
                 //排除在此拦截器外
-                .excludePathPatterns("/user/login")
+                .excludePathPatterns("/business/register","/user/login")
                 //被拦截的规则
                 .addPathPatterns("/**");
     }

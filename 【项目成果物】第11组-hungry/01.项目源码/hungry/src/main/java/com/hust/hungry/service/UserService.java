@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface UserService extends IService<User> {
     public int register(User user);
     public void deleteUser(String userId);
+    public User saveUser(User user);
 }
