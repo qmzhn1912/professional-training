@@ -21,7 +21,7 @@ public class User{
     private String userImg;
 
     private Integer delTag;
-
+    // type 1代表用户 0代表商家
     private Integer type;
 
     public User(){
