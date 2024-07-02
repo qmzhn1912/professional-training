@@ -16,7 +16,7 @@ import java.util.List;
 public interface BusinessMapper extends BaseMapper<Business> {
      @Select("""
         <script>
-        select b.businessName,b.businessId,b.businessAddress,b.businessExplain,b.businessImg,b.orderTypeId,b.starPrice,b.deliveryPrice
+        select b.businessName,b.businessId,b.businessAddress,b.businessExplain,b.businessImg,b.orderTypeId,b.startPrice,b.deliveryPrice
           from business b
         <where>
            <if test="k!=null and k!=''">
@@ -30,7 +30,7 @@ public interface BusinessMapper extends BaseMapper<Business> {
 
       @Select("""
         <script>
-        select b.businessName,b.businessId,b.businessAddress,b.businessExplain,b.businessImg,b.orderTypeId,b.starPrice,b.deliveryPrice
+        select b.businessName,b.businessId,b.businessAddress,b.businessExplain,b.businessImg,b.orderTypeId,b.startPrice,b.deliveryPrice
           from business b
         <where>
              b.orderTypeId = #{orderTypeId}

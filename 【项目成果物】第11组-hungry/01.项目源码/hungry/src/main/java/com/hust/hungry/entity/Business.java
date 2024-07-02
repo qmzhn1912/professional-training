@@ -16,7 +16,7 @@ public class Business {
     private String businessExplain;
     private String businessImg;
     private Integer orderTypeId;
-    private Float starPrice;
+    private Float startPrice;
     private Float deliveryPrice;
     private  String remarks;
     private Integer appraiseNum;

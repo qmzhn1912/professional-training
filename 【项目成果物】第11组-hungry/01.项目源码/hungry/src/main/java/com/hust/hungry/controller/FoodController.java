@@ -22,15 +22,24 @@ public class FoodController {
         List<Food> foodList = foodMapper.selectList(lambdaQueryWrapper);
         return new JsonResult(foodList);
     }
-    @GetMapping("/add")
-    public JsonResult addBusinessFoodList(@RequestBody Food food) {
+    @GetMapping("/getInfo")
+    public JsonResult getFoodInfo(@RequestParam("foodId")Integer foodId) {
+        LambdaQueryWrapper<Food> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        //查询条件
+        lambdaQueryWrapper.eq(Food::getFoodId,foodId);
+        Food food = foodMapper.selectOne(lambdaQueryWrapper);
+        return new JsonResult(food);
+    }
+    @PostMapping("/add/{businessId}")
+    public JsonResult addBusinessFoodList(@PathVariable("businessId")Integer businessId,@RequestBody Food food) {
+        food.setBusinessId(businessId);
         foodMapper.insert(food);
         return new JsonResult("添加成功");
     }
     @DeleteMapping("/del")
-    public JsonResult delBusinessFoodList(@RequestParam("businessId")Integer businessId) {
+    public JsonResult delBusinessFoodList(@RequestParam("foodId")Integer foodId) {
         LambdaQueryWrapper<Food> lambdaQueryWrapper=new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Food::getBusinessId,businessId);
+        lambdaQueryWrapper.eq(Food::getFoodId,foodId);
         foodMapper.delete(lambdaQueryWrapper);
         return new JsonResult("删除成功");
     }
@@ -38,9 +47,10 @@ public class FoodController {
     public JsonResult updateBusinessFoodList(@RequestBody Food food){
         Food updatedFood = foodMapper.selectById(food.getFoodId());
         updatedFood.setFoodName(food.getFoodName());
-        updatedFood.setFoodName(food.getFoodExplain());
-        updatedFood.setFoodName(food.getFoodExplain());
-        updatedFood.setFoodName(food.getRemarks());
+        updatedFood.setFoodExplain(food.getFoodExplain());
+        updatedFood.setFoodPrice(food.getFoodPrice());
+        updatedFood.setRemarks(food.getRemarks());
+        updatedFood.setFoodImg(food.getFoodImg());
         foodMapper.updateById(updatedFood);
         return new JsonResult(updatedFood);
     }

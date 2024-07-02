@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -116,33 +118,37 @@ public class OrderController {
         return  new JsonResult(page);
     }
 
-    @PostMapping("/produce")
-    public void produceOrder(@RequestBody Orders order){
+    @GetMapping("/produce")
+    public JsonResult produceOrder(@RequestParam(value = "businessId") Integer businessId,@RequestParam(value = "userId") String userId){
+        System.out.println(businessId);
+        Orders order=new Orders();
         Date date=new Date();
-        String time = date.getTime()+"";
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         double orderToal = 0;
         LambdaQueryWrapper<Cart> lambdaQueryWrapper=new LambdaQueryWrapper<>();
         //查询条件
-        lambdaQueryWrapper.eq(Cart::getBusinessId,order.getBusinessId());
-        lambdaQueryWrapper.eq(Cart::getUserId,order.getUserId());
+        lambdaQueryWrapper.eq(Cart::getBusinessId,businessId);
+        lambdaQueryWrapper.eq(Cart::getUserId,userId);
 
         List<Cart> cartList = cartMapper.selectList(lambdaQueryWrapper);
         for(Cart cart:cartList){
             Integer foodId = cart.getFoodId();
             orderToal += cart.getQuantity()*foodMapper.selectById(foodId).getFoodPrice();
         }
-//        System.out.println(orderToal);
+        System.out.println(orderToal);
         QueryWrapper<Deliveryaddress> queryWrapper=new QueryWrapper<>();
         //查询条件
-        queryWrapper.eq("userId",order.getUserId());
+        queryWrapper.eq("userId",userId);
         //查询列
         queryWrapper.select(true,"daId");
         Deliveryaddress deliveryaddress = deliveryaddressMapper.selectOne(queryWrapper);
 //        System.out.println(deliveryaddress.getDaId());
-        order.setOrderDate(time);
+        order.setOrderDate(formatter.format(date));
         order.setOrderTotal(orderToal);
 //        System.out.println(order.getOrderTotal());
         order.setDaId(deliveryaddress.getDaId());
+        order.setUserId(userId);
+        order.setBusinessId(businessId);
         orderMapper.insert(order);
         for(Cart cart:cartList){
             Integer foodId = cart.getFoodId();
@@ -156,6 +162,9 @@ public class OrderController {
         //删除条件
         lambdaQueryWrapper_sd.eq(Cart::getUserId,order.getUserId());
         cartMapper.delete(lambdaQueryWrapper_sd);
+        return new JsonResult(order);
+
+
     }
 
 

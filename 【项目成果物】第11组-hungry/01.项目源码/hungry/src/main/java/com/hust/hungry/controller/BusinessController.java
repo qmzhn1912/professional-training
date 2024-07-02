@@ -104,18 +104,14 @@ public class BusinessController {
     }
 
     @PutMapping("/update/{businessId}")
-     public JsonResult update(@RequestParam(value = "businessName") String businessName,
-                              @RequestParam(value = "starPrice") Float starPrice,
-                              @RequestParam(value = "businessAddress") String businessAddress,
-                              @RequestParam(value = "deliveryPrice") Float deliveryPrice,
-                              @PathVariable("businessId")Integer businessId) {
-        Business business = businessMapper.selectById(businessId);
-        business.setBusinessName(businessName);
-        business.setStarPrice(starPrice);
-        business.setBusinessAddress(businessAddress);
-        business.setDeliveryPrice(deliveryPrice);
-        businessMapper.updateById(business);
-        return new JsonResult(business);
+     public JsonResult update(@RequestBody Business business) {
+        Business updatedBusiness = businessMapper.selectById(business.getBusinessId());
+        updatedBusiness.setBusinessName(business.getBusinessName());
+        updatedBusiness.setStartPrice(business.getStartPrice());
+        updatedBusiness.setBusinessAddress(business.getBusinessAddress());
+        updatedBusiness.setDeliveryPrice(business.getDeliveryPrice());
+        businessMapper.updateById(updatedBusiness);
+        return new JsonResult(updatedBusiness);
     }
 
     @PutMapping("/updateStatus")
