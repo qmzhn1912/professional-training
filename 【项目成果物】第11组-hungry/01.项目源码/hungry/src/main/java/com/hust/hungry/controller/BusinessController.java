@@ -1,8 +1,10 @@
 package com.hust.hungry.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hust.hungry.entity.Business;
+import com.hust.hungry.entity.Cart;
 import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.User;
 import com.hust.hungry.entity.vo.OrderVo;
@@ -89,7 +91,7 @@ public class BusinessController {
     }
 
     @PostMapping("/register")
-        public ResponseEntity<User> registerBusiness(@RequestBody Business business,@Param("password") String password) {
+        public JsonResult registerBusiness(@RequestBody Business business,@Param("password") String password) {
         User user = new User();
         user.setUserName(business.getBusinessName());
         user.setPassword(password);
@@ -100,22 +102,18 @@ public class BusinessController {
         user.setType(0);
         User users = userService.saveUser(user);
         businessService.saveBusiness(business);
-        return ResponseEntity.status(HttpStatus.CREATED).body(users);
+        return new JsonResult(business.getBusinessId());
     }
 
     @PutMapping("/update/{businessId}")
-     public JsonResult update(@RequestParam(value = "businessName") String businessName,
-                              @RequestParam(value = "starPrice") Float starPrice,
-                              @RequestParam(value = "businessAddress") String businessAddress,
-                              @RequestParam(value = "deliveryPrice") Float deliveryPrice,
-                              @PathVariable("businessId")Integer businessId) {
-        Business business = businessMapper.selectById(businessId);
-        business.setBusinessName(businessName);
-        business.setStarPrice(starPrice);
-        business.setBusinessAddress(businessAddress);
-        business.setDeliveryPrice(deliveryPrice);
-        businessMapper.updateById(business);
-        return new JsonResult(business);
+     public JsonResult update(@RequestBody Business business) {
+        Business updatedBusiness = businessMapper.selectById(business.getBusinessId());
+        updatedBusiness.setBusinessName(business.getBusinessName());
+        updatedBusiness.setStartPrice(business.getStartPrice());
+        updatedBusiness.setBusinessAddress(business.getBusinessAddress());
+        updatedBusiness.setDeliveryPrice(business.getDeliveryPrice());
+        businessMapper.updateById(updatedBusiness);
+        return new JsonResult(updatedBusiness);
     }
 
     @PutMapping("/updateStatus")

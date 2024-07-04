@@ -23,7 +23,16 @@ public class UserController {
     public JsonResult reg(@RequestBody User user){
         //1、取  取参数封装  看方法的参数
         // 2、调 业务逻辑层
-        int rs= userService.register(user);
+        int rs = 0;
+        LambdaQueryWrapper<User> lambdaQueryWrapper=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(User::getUserName,user.getUserName());
+        User u = userService.getOne(lambdaQueryWrapper);
+        if(u==null){
+            rs= userService.register(user);
+        }
+        else{
+            return new JsonResult(false,"用户名已存在，请更换用户名");
+        }
         // 3、转  输出结果
         //return
         if(rs==1){

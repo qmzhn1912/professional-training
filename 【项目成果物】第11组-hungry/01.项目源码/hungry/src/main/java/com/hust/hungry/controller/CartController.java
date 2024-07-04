@@ -2,15 +2,15 @@ package com.hust.hungry.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.hust.hungry.entity.Cart;
+import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.User;
 import com.hust.hungry.mapper.CartMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
@@ -19,7 +19,7 @@ public class CartController {
     @Autowired
     private CartMapper cartMapper;
 
-    @PostMapping("/updata")
+    @PostMapping("/update")
     public ResponseEntity<Cart> addToCart(@RequestBody Cart cart) {
         // 使用 MybatisPlus 的 LambdaQueryWrapper 来查找购物车记录
         LambdaQueryWrapper<Cart> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -39,5 +39,14 @@ public class CartController {
             cartMapper.insert(cart);
             return ResponseEntity.status(HttpStatus.CREATED).body(cart);
         }
+    }
+    @GetMapping("/getInfo")
+    public JsonResult getCartInfo(@RequestParam(value = "businessId") Integer businessId,
+                                  @RequestParam(value = "userId") String userId){
+        LambdaQueryWrapper<Cart> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Cart::getUserId,userId)
+                .eq(Cart::getBusinessId, businessId);
+        List<Cart> cartList = cartMapper.selectList(lambdaQueryWrapper);
+        return new JsonResult(cartList);
     }
 }
