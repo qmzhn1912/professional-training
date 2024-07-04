@@ -99,10 +99,10 @@ public class BusinessController {
         user.setUserId(id);
         business.setUserId(id);
         business.setRemarks("open");
-        user.setType(0);
+        user.setType(1);
         User users = userService.saveUser(user);
         businessService.saveBusiness(business);
-        return new JsonResult(business.getBusinessId());
+        return new JsonResult(business.getUserId());
     }
 
     @PutMapping("/update/{businessId}")
@@ -112,6 +112,13 @@ public class BusinessController {
         updatedBusiness.setStartPrice(business.getStartPrice());
         updatedBusiness.setBusinessAddress(business.getBusinessAddress());
         updatedBusiness.setDeliveryPrice(business.getDeliveryPrice());
+        businessMapper.updateById(updatedBusiness);
+        return new JsonResult(updatedBusiness);
+    }
+    @GetMapping("/updateAddress/{businessId}")
+    public JsonResult updateAddress(@PathVariable(value = "businessId")Integer businessId,@RequestParam("businessAddress")String businessAddress) {
+        Business updatedBusiness = businessMapper.selectById(businessId);
+        updatedBusiness.setBusinessAddress(businessAddress);
         businessMapper.updateById(updatedBusiness);
         return new JsonResult(updatedBusiness);
     }
@@ -129,5 +136,12 @@ public class BusinessController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to update business status.");
         }
+    }
+    @GetMapping("/getBusinessId")
+    public JsonResult getId(@RequestParam("userId") String userId){
+        LambdaQueryWrapper<Business> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Business::getUserId,userId);
+        Business business = businessMapper.selectOne(queryWrapper);
+        return new JsonResult(business);
     }
 }
