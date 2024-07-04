@@ -1,8 +1,10 @@
 package com.hust.hungry.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hust.hungry.entity.Business;
+import com.hust.hungry.entity.Cart;
 import com.hust.hungry.entity.JsonResult;
 import com.hust.hungry.entity.User;
 import com.hust.hungry.entity.vo.OrderVo;
@@ -89,7 +91,7 @@ public class BusinessController {
     }
 
     @PostMapping("/register")
-        public ResponseEntity<User> registerBusiness(@RequestBody Business business,@Param("password") String password) {
+        public JsonResult registerBusiness(@RequestBody Business business,@Param("password") String password) {
         User user = new User();
         user.setUserName(business.getBusinessName());
         user.setPassword(password);
@@ -100,7 +102,7 @@ public class BusinessController {
         user.setType(0);
         User users = userService.saveUser(user);
         businessService.saveBusiness(business);
-        return ResponseEntity.status(HttpStatus.CREATED).body(users);
+        return new JsonResult(business.getBusinessId());
     }
 
     @PutMapping("/update/{businessId}")
