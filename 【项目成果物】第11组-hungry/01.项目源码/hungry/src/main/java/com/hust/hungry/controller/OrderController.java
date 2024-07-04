@@ -163,8 +163,6 @@ public class OrderController {
         lambdaQueryWrapper_sd.eq(Cart::getUserId,order.getUserId());
         cartMapper.delete(lambdaQueryWrapper_sd);
         return new JsonResult(order);
-
-
     }
 
 

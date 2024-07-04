@@ -13,6 +13,6 @@ public class Deliveryaddress {
     private  String address;
     private  String contactTel;
     private  String contactName;
-    private  Integer contactSex;
+    private  String contactSex;
 }
 

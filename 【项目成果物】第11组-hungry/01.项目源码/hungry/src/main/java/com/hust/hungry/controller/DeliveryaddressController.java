@@ -34,5 +34,21 @@ public class DeliveryaddressController {
         deliveryaddressMapper.update(wrapper);
         return new JsonResult("成功更新");
     }
+    @GetMapping("/get")
+    public JsonResult get(@RequestParam("userId") String userId) {
+        LambdaQueryWrapper<Deliveryaddress> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Deliveryaddress::getUserId,userId);
+        Deliveryaddress deliveryaddress = deliveryaddressMapper.selectOne(wrapper);
+        return new JsonResult(deliveryaddress);
+    }
+
+    @PostMapping("/save")
+    public JsonResult save(@RequestBody Deliveryaddress deliveryaddress) {
+        LambdaQueryWrapper<Deliveryaddress> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Deliveryaddress::getUserId,deliveryaddress.getUserId());
+        deliveryaddressMapper.delete(wrapper);
+        deliveryaddressMapper.insert(deliveryaddress);
+        return new JsonResult("成功保存");
+    }
 }
 

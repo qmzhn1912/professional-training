@@ -37,7 +37,7 @@ public class UserController {
         //return
         if(rs==1){
             System.out.println("注册成功");
-            return new JsonResult(true,"注册成功");
+            return new JsonResult(true,user,"注册成功");
         }else{
             return new JsonResult(false,"注册失败");
         }
