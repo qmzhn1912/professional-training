@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hello, World</title>
+    <style type="text/css">
+        html { height: 100%; }
+        body { height: 100%; margin: 0px; padding: 0px; }
+        #container { height: 100%; }
+        #searchInput {
+            font-size: 16px;
+            padding: 8px 12px;
+        }
+        #searchButton {
+            font-size: 16px;
+            padding: 8px 16px;
+            margin-left: 10px;
+        }
+    </style>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=OIAZNTZOdO4PHW62xGcw07BVT9pwtUo7"></script>
+</head>
+
+<body>
+<input type="text" id="searchInput" placeholder="输入地址" />
+<button id="searchButton" type="button" onclick="searchAddress()">搜索</button>
+<div id="container"></div>
+<script type="text/javascript">
+    var map = new BMapGL.Map("container");
+    var point = new BMapGL.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+
+    function searchAddress() {
+        var address = document.getElementById("searchInput").value;
+        var myGeo = new BMapGL.Geocoder();
+        myGeo.getPoint(address, function(point) {
+            if (point) {
+                map.centerAndZoom(point, 15);
+                var marker = new BMapGL.Marker(point);
+                map.addOverlay(marker);
+                marker.addEventListener('click', function(e) {
+                    showLocationDetails(e.target.getPosition());
+                });
+            } else {
+                alert("您输入的地址有误");
+            }
+        });
+    }
+
+    function showLocationDetails(point) {
+        var infoWindow = new BMapGL.InfoWindow("", {
+            width: 250,
+            height: 100,
+            title: "位置信息"
+        });
+
+        var gc = new BMapGL.Geocoder();
+        gc.getLocation(point, function(rs) {
+            var addComp = rs.addressComponents;
+            var address = addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber;
+
+            // 将BD-09坐标转换为WGS-84坐标
+            var wgsPoint = convertBD09ToWGS84(point.lng, point.lat);
+
+            infoWindow.setContent(address + "<br>经度: " + wgsPoint.lng + ", 纬度: " + wgsPoint.lat);
+            map.openInfoWindow(infoWindow, point);
+        });
+    }
+
+    function convertBD09ToWGS84(bdLng, bdLat) {
+        var X_PI = Math.PI * 3000.0 / 180.0;
+        var x = bdLng - 0.0065;
+        var y = bdLat - 0.006;
+        var z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * X_PI);
+        var theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * X_PI);
+        var ggLng = z * Math.cos(theta);
+        var ggLat = z * Math.sin(theta);
+
+        return {
+            lng: ggLng,
+            lat: ggLat
+        };
+    }
+
+    map.addEventListener('click', function(e) {
+        // 创建一个 BMapGL.Point 实例
+        var point = new BMapGL.Point();
+
+        // 设置经度和纬度属性
+        point.lng = e.latlng.lng;
+        point.lat = e.latlng.lat;
+        showLocationDetails(point);
+    });
+
+    var menu = new BMapGL.ContextMenu();
+    var txtMenuItem = [
+        {
+            text: '放大',
+            callback: function() {
+                map.zoomIn();
+            }
+        },
+        {
+            text: '缩小',
+            callback: function() {
+                map.zoomOut();
+            }
+        },
+        {
+            text: '确认地址',
+            callback: function() {
+                ConfirmAddress();
+            }
+        }
+    ];
+    for (var i = 0; i < txtMenuItem.length; i++) {
+        menu.addItem(new BMapGL.MenuItem(txtMenuItem[i].text, txtMenuItem[i].callback));
+    }
+
+    function ConfirmAddress() {
+
+        // 弹出对话框显示地址和坐标信息
+        alert("\n经度: " );
+
+    }
+    map.addContextMenu(menu);
+</script>
+</body>
+</html>
